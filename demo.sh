@@ -5,43 +5,6 @@ if [[ -n "$JAVA_OPTS" ]]; then
   echo JAVA_OPTS = $JAVA_OPTS
 fi
 
-if [[ -n "$APOLLO_CONFIG_DB_URL" ]]; then
-  echo APOLLO_CONFIG_DB_URL = "$APOLLO_CONFIG_DB_URL"
-fi
-
-if [[ -n "$APOLLO_CONFIG_DB_USERNAME" ]]; then
-  echo APOLLO_CONFIG_DB_USERNAME = "$APOLLO_CONFIG_DB_USERNAME"
-fi
-
-if [[ -n "$APOLLO_CONFIG_DB_PASSWORD" ]]; then
-  echo APOLLO_CONFIG_DB_PASSWORD = "${APOLLO_CONFIG_DB_PASSWORD//?/*}"
-fi
-
-if [[ -n "$APOLLO_PORTAL_DB_URL" ]]; then
-  echo APOLLO_PORTAL_DB_URL = "$APOLLO_PORTAL_DB_URL"
-fi
-
-if [[ -n "$APOLLO_PORTAL_DB_USERNAME" ]]; then
-  echo APOLLO_PORTAL_DB_USERNAME = "$APOLLO_PORTAL_DB_USERNAME"
-fi
-
-if [[ -n "$APOLLO_PORTAL_DB_PASSWORD" ]]; then
-  echo APOLLO_PORTAL_DB_PASSWORD = "${APOLLO_PORTAL_DB_PASSWORD//?/*}"
-fi
-
-# database platform
-spring_profiles_group_github=${SPRING_PFOILES_GROUP_GITHUB:-mysql}
-
-# apollo config db info
-apollo_config_db_url=${APOLLO_CONFIG_DB_URL:-"jdbc:mysql://localhost:3306/ApolloConfigDB?characterEncoding=utf8&serverTimezone=Asia/Shanghai"}
-apollo_config_db_username=${APOLLO_CONFIG_DB_USERNAME:-root}
-apollo_config_db_password=${APOLLO_CONFIG_DB_PASSWORD:-}
-
-# apollo portal db info
-apollo_portal_db_url=${APOLLO_PORTAL_DB_URL:-"jdbc:mysql://localhost:3306/ApolloPortalDB?characterEncoding=utf8&serverTimezone=Asia/Shanghai"}
-apollo_portal_db_username=${APOLLO_PORTAL_DB_USERNAME:-root}
-apollo_portal_db_password=${APOLLO_PORTAL_DB_PASSWORD:-}
-
 # =============== Please do not modify the following content =============== #
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -62,7 +25,7 @@ portal_url=http://localhost:8070
 # JAVA OPTS
 BASE_JAVA_OPTS="$JAVA_OPTS -Denv=dev"
 CLIENT_JAVA_OPTS="$BASE_JAVA_OPTS -Dapollo.meta=$config_server_url"
-SERVER_JAVA_OPTS="$BASE_JAVA_OPTS -Dspring.profiles.active=github,database-discovery"
+SERVER_JAVA_OPTS="$BASE_JAVA_OPTS -Ddev_meta=$config_server_url -Dspring.profiles.active=github,auth,database-discovery -Deureka.client.enabled=false -Dhibernate.query.plan_cache_max_size=192"
 PORTAL_JAVA_OPTS="$BASE_JAVA_OPTS -Ddev_meta=$config_server_url -Dspring.profiles.active=github,auth -Deureka.client.enabled=false -Dhibernate.query.plan_cache_max_size=192"
 
 # executable
